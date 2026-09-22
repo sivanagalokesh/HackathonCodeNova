@@ -2,6 +2,7 @@ services:
   - type: web
     name: codenova-api
     runtime: docker
+    plan: free
     rootDir: backend
     healthCheckPath: /api/home
     envVars:
