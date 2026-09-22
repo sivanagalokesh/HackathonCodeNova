@@ -1,10 +1,8 @@
 services:
   - type: web
     name: codenova-api
-    runtime: java
+    runtime: docker
     rootDir: backend
-    buildCommand: ./mvnw -DskipTests package
-    startCommand: java -jar target/codenova-backend-1.0.0.jar
     healthCheckPath: /api/home
     envVars:
       - key: MYSQL_HOST
