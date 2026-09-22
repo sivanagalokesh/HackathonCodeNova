@@ -5,8 +5,12 @@ import type {
   SalesView,
 } from '../types';
 
-// One axios instance. In dev, Vite proxies /api -> localhost:8080.
-export const api = axios.create({ baseURL: '/api' });
+// In development Vite proxies /api; in production Render injects the backend URL.
+const configuredBase = import.meta.env.VITE_API_BASE ?? '';
+const apiBase = configuredBase && !configuredBase.startsWith('http')
+  ? `https://${configuredBase}`
+  : configuredBase;
+export const api = axios.create({ baseURL: `${apiBase}/api` });
 
 // Fixed demo identities seeded in data.sql
 export const DEMO_USER_ID = 1;

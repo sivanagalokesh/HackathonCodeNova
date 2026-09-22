@@ -1,0 +1,36 @@
+services:
+  - type: web
+    name: codenova-api
+    runtime: java
+    rootDir: backend
+    buildCommand: ./mvnw -DskipTests package
+    startCommand: java -jar target/codenova-backend-1.0.0.jar
+    healthCheckPath: /api/home
+    envVars:
+      - key: MYSQL_HOST
+        sync: false
+      - key: MYSQL_PORT
+        value: "3306"
+      - key: MYSQL_DATABASE
+        value: codenova
+      - key: MYSQL_USER
+        sync: false
+      - key: MYSQL_PASSWORD
+        sync: false
+
+  - type: web
+    name: codenova-storefront
+    runtime: static
+    rootDir: frontend
+    buildCommand: npm ci && npm run build
+    staticPublishPath: dist
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    envVars:
+      - key: VITE_API_BASE
+        fromService:
+          type: web
+          name: codenova-api
+          property: host

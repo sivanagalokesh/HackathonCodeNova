@@ -46,6 +46,15 @@ Vite proxies `/api` and `/ws` to `:8080`, so no CORS/config needed in dev.
 - Storefront → http://localhost:5173/
 - Operations Center → http://localhost:5173/operations
 
+## Deploy on Render
+
+This repository includes `render.yaml` for a Spring Boot API and a Vite static site. Render does not provide MySQL, so create or use an externally hosted MySQL 8 database first, then set `MYSQL_HOST`, `MYSQL_USER`, and `MYSQL_PASSWORD` when creating the Blueprint. Render injects the API URL into the storefront as `VITE_API_BASE`.
+
+1. In Render, choose **New → Blueprint** and select this repository.
+2. Set the three MySQL environment variables for `codenova-api`.
+3. Deploy both services. The backend health check is `/api/home`.
+4. Open the `codenova-storefront` URL. The storefront, checkout, operations center, and WebSocket updates use the deployed API automatically.
+
 **3. Concurrency proof (no MySQL needed — runs on in-memory H2 in MySQL mode)**
 ```bash
 cd backend

@@ -13,8 +13,11 @@ import SockJS from 'sockjs-client';
 
 type Handler = (body: any) => void;
 
-const SOCK_URL =
-  (import.meta.env.DEV ? '' : (import.meta.env.VITE_API_BASE ?? '')) + '/ws';
+const configuredBase = import.meta.env.VITE_API_BASE ?? '';
+const socketBase = configuredBase && !configuredBase.startsWith('http')
+  ? `https://${configuredBase}`
+  : configuredBase;
+const SOCK_URL = socketBase + '/ws';
 
 class StompHub {
   private client: Client;
